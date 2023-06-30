@@ -1,0 +1,9 @@
+stof_doctrine_extensions:
+    default_locale: en_GB
+    class:
+        blameable: App\Common\Infrastructure\Doctrine\Listener\BlameableListener
+    orm:
+        default:
+            softdeleteable: true
+            blameable: true
+            timestampable: true

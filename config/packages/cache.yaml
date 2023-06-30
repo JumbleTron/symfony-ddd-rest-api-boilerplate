@@ -1,0 +1,9 @@
+framework:
+    cache:
+        prefix_seed: utn/afi
+        app: cache.adapter.apcu
+
+when@test:
+    framework:
+        cache:
+            app: cache.adapter.filesystem

@@ -1,0 +1,27 @@
+version: "3.4"
+
+services:
+  php:
+      build:
+        context: .
+        target: php
+        args:
+          - UID=${UID:-1000}
+          - GID=${GID:-1000}
+        volumes:
+            - ./:/srv/api
+            - /srv/api/var
+            - /srv/api/vendor
+            - ./docker/php/conf.d/afi_dev.ini:/usr/local/etc/php/conf.d/afi_dev.ini:ro
+  api:
+    ports:
+      - 80:80 #ONLY PORT BEFORE ":" CAN BE CHANGED
+
+  db:
+    ports:
+      - 3306:3306 #ONLY PORT BEFORE ":" CAN BE CHANGED
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=hur
+      - MYSQL_USER=hur
+      - MYSQL_PASSWORD=hur

@@ -1,0 +1,17 @@
+parameters:
+  level: 6
+  paths:
+    - src
+  reportUnmatchedIgnoredErrors: true
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
+  ignoreErrors:
+    - '#Property [a-zA-Z0-9\\_:\(\)]+WriteModel::\$[a-zA-Z0-9]+ is never written, only read#'
+    - '#Call to an undefined method Afi\\[a-zA-Z]+\\Infrastructure\\Repository\\[a-zA-Z]+Repository::find\(\).#'
+    - '#Method Afi\\Common\\Application\\Validator\\Constraints\\ConstrainsUniqueValueInEntityValidator::validate\(\) has parameter \$value with no type specified.#'
+    - '#Method Afi\\Common\\Application\\Validator\\Constraints\\RoleValidator::validate\(\) has parameter \$value with no type specified.#'
+    - '#Method Afi\\Common\\Application\\Validator\\Constraints\\RoleValidator::validate\(\) has no return type specified.#'
+    - '#Unable to resolve the template type T in call to method Doctrine\\ORM\\EntityManagerInterface::getRepository\(\)#'
+    - '#Method Afi\\Common\\Application\\Service\\UuidInterfacePropertyDescriber::describe\(\) has no return type specified.#'
+    - '#Method Afi\\Common\\Application\\Validator\\Constraints\\RequiredFieldByRoleValidator::validate\(\) has parameter \$value with no type specified.#'
+    - '#Call to an undefined method Doctrine\\Persistence\\ObjectManager::getUnitOfWork\(\).#'

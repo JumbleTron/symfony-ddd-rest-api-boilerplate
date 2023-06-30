@@ -1,0 +1,15 @@
+version: '3.4'
+
+options:
+  verbose: true
+syncs:
+  php:
+    src: './'
+    sync_excludes: ['var', 'vendor', 'public']
+    sync_userid: 1000
+    sync_groupid: 1000
+
+  api:
+    src: './public/'
+    sync_userid: 1000
+    sync_groupid: 1000

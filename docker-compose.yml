@@ -1,0 +1,58 @@
+version: '3.4'
+
+services:
+  php:
+    container_name: app_php
+    restart: on-failure
+    build:
+      context: .
+      target: php_dev
+      args:
+        XDEBUG_ENABLE: 'true'
+    environment:
+      - APP_ENV=local
+    depends_on:
+      - db
+    volumes:
+      - ./:/srv/api:rw,cached
+      - ./docker/php/conf.d/afi.ini:/usr/local/etc/php/conf.d/api.ini
+
+  api:
+    container_name: app_nginx
+    restart: on-failure
+    build:
+      context: .
+      target: nginx
+    depends_on:
+      - php
+    volumes:
+      - ./public:/srv/api/public:rw
+      - ./docker/nginx/conf.d/local.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - target: 80
+        published: 8080
+        protocol: tcp
+
+  db:
+    image: postgis/postgis:14-3.1-alpine
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data:cached
+
+  adminer:
+    image: adminer
+    depends_on:
+      - db
+    ports:
+      - target: 8080
+        published: 3005
+        protocol: tcp
+
+volumes:
+  db:
+  storage:

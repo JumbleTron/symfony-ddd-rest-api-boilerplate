@@ -1,0 +1,71 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+    _instanceof:
+        App\Common\Application\Command\CommandHandler:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }
+        App\Common\Application\Query\QueryHandler:
+            tags:
+                - { name: messenger.message_handler, bus: query.bus }
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: [ 'controller.service_arguments' ]
+
+
+    App\Common\Domain\HealthCheckResultAbstract:
+        class: App\Common\Domain\HealthCheckJsonResult
+
+    Symfony\Component\Serializer\SerializerInterface:
+        class: Symfony\Component\Serializer\Serializer
+        factory: '@App\Common\Infrastructure\SerializerFactory'
+
+
+    App\Common\Application\EventListener\UuidValueResolver:
+        tags:
+            - { name: controller.argument_value_resolver, priority: 100 }
+
+    App\Common\Application\Service\UuidInterfacePropertyDescriber:
+        tags: [{ name: nelmio_api_doc.object_model.property_describer }]
+
+    Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber:
+        arguments:
+            $mediaTypes: [ ]
+            $propertyDescribers: !tagged_iterator nelmio_api_doc.object_model.property_describer
+            $nameConverter: '@serializer.name_converter.camel_case_to_snake_case'
+        tags: [ nelmio_api_doc.model_describer ]
+
+when@local:
+    services:
+        App\Common\Application\EventListener\ExceptionListener:
+            arguments: [ '@monolog.logger', "%kernel.environment%"]
+            tags:
+                 - { name: kernel.event_listener, event: kernel.exception }
+
+when@dev:
+    services:
+        App\Common\Application\EventListener\ExceptionListener:
+            arguments: [ '@monolog.logger', "%kernel.environment%" ]
+            tags:
+                - { name: kernel.event_listener, event: kernel.exception }
+
+when@test:
+    services:
+        App\Common\Application\EventListener\ExceptionListener:
+            arguments: [ '@monolog.logger', "%kernel.environment%" ]
+            tags:
+                - { name: kernel.event_listener, event: kernel.exception }
+
+when@prod:
+    services:
+        App\Common\Application\EventListener\ExceptionListener:
+            arguments: [ '@monolog.logger', "%kernel.environment%" ]
+            tags:
+                - { name: kernel.event_listener, event: kernel.exception }

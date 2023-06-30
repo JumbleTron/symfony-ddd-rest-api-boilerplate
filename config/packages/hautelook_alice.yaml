@@ -1,0 +1,5 @@
+when@local: &local
+    hautelook_alice:
+        fixtures_path: fixtures
+
+when@test: *local
